@@ -1,0 +1,15 @@
+:root {
+    --ligth-green:  #80b571;
+    --white: #ffffff;
+    --black: #000000; 
+    --black30off:rgba(0, 0, 0, 0.3);
+    --lightgray : #fbfdff;
+    --lightgray2 : #efefef;
+    --lightgray-scroolbar-bg: #e2e2e2;
+    --lightgray-scrollbar-border:#bdbcbc;
+
+    --lightblue-searchbar:#ffffff9c;
+    --lightblue-searchbar-border:#b9d6e8;
+    --lightblue-searchbar-shadow:#7492a7;
+    
+}
