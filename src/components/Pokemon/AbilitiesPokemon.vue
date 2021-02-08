@@ -31,6 +31,7 @@ export default {
         display: flex;
         justify-content: center;
         padding: 10px 0px;
+        text-transform: capitalize;
     }
     .listAbilities p {
         border: 1px solid;

@@ -1,7 +1,7 @@
 <template>
   <div class="moves" :style="{'--scroll-color': scrollColor }" >
       <h2>Moves</h2>
-      <div class="listMoves" color="red">
+      <div class="listMoves">
         <div v-for="(move, index) in this.moves" :key="index" >
             <p>{{move.move.name}}</p>
         </div>
@@ -34,6 +34,7 @@ export default {
         overflow-x: auto;
         margin: 5px;
         padding: 10px 0px;
+        text-transform: capitalize;
     }
     .listMoves p {
         border: 1px solid;
