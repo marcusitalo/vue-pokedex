@@ -1,3 +1,3 @@
 module.exports = {
-    publicPath: ""
+    publicPath: "https://marcusitalo.github.io/vue-pokedex/docs/"
   }
