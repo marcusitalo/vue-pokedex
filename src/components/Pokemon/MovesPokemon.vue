@@ -29,12 +29,15 @@ export default {
         margin:5px;
     }
     .listMoves {
-        display: flex;
         justify-content: left;
         overflow-x: auto;
         margin: 5px;
         padding: 10px 0px;
         text-transform: capitalize;
+        height: 100px;
+    }
+    .listMoves div{
+        display: inline-block;
     }
     .listMoves p {
         border: 1px solid;

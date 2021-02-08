@@ -6,7 +6,10 @@
       </figure>
     </div>
     <div class="searchSection">
-      <input type="text" name="" id="" placeholder="Pesquisar pokemon. Ex:Charizard" v-model="search" class="searchBar" @keyup="debounce"/>      
+      <div class='viewSearch'>
+        <input type="text" name="" id="searchBar" placeholder="Pesquisar pokemon. Ex:Charizard" v-model="search" class="searchBar" @keyup="debounce"/>            
+        <span for="searchBar" v-if="search" class="btn-clean" @click="cleanSearchBar">X</span>
+      </div>      
     </div>
     <div id="app" v-if="allPokemons">
       <Pikachu />  
@@ -64,6 +67,10 @@ export default {
             localStorage.pokemons = JSON.stringify(res.data.results)
           })
     },
+    cleanSearchBar(){
+      this.search = ''
+      this.debounce()
+    },
     showModal(data) {
       this.details = data
       this.isModalVisible = true;
@@ -112,11 +119,12 @@ export default {
   }
   .searchSection{
     display: flex;
-    margin: 30px 0px;
-  }
+    margin: 30px 0px;    
+    justify-content: center;
+  }  
   .searchBar{
     margin: auto;
-    width: 50%;
+    width: 50vw;
     border: 0px;
     padding: 10px;
     background: var(--lightblue-searchbar);
@@ -124,9 +132,26 @@ export default {
     text-align: center;
     box-shadow: 0px 0px 3px 1px var(--lightblue-searchbar-shadow);
     border-radius: 20px;
+    font-family: monospace;
+    font-weight: bolder;
+    color: var(--lightblue-searchbar-shadow);
+    font-size: larger;
   }
   .searchBar::placeholder { 
     color: var(--lightblue-searchbar-shadow);
+  }
+  .viewSearch {
+      display: inline-block;
+  }
+  .btn-clean {
+    position: absolute;
+    margin: 7px -30px;
+    font-family: cursive;
+    font-size: 15px;
+    font-weight: bold;
+    color: var(--lightblue-clean-text);
+    text-shadow: 1px 1px 1px var(--lightblue-clean-shadow);
+    cursor: pointer;
   }
   .listsPokemons {
       display: flex;
