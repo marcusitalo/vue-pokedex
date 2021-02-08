@@ -112,7 +112,7 @@ export default {
   }
   .searchSection{
     display: flex;
-    margin-bottom: 30px;
+    margin: 30px 0px;
   }
   .searchBar{
     margin: auto;

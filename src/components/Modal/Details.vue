@@ -72,7 +72,9 @@ export default {
     text-shadow: 1px 1px var(--black);
     font-size: xxx-large;
     margin:0px;
-    margin-top: -15px;
+    margin-top: -25px;
+    z-index: 10!important;
+    position: relative;
   }
   .typesDetails {
     display: inline-flex;
@@ -98,6 +100,24 @@ export default {
     background-color: var(--lightgray2);
     position: relative;
   }
+  .body-details::before {
+    content: "";
+    position: absolute;
+    width: 250px;
+    height: 250px;
+    left: 85px;
+    top: -125px;
+    z-index: 9!important;
+    display: flex;
+    justify-content: center;
+    background-image: url('../../assets/images/pokeball.png');
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: center center;
+    will-change: animation, transform;
+    -webkit-animation: rotationBackground 10s linear infinite;
+    animation: rotationBackground 10s linear infinite;
+  }
   .imageDetails{
     display: flex!important;
     justify-content: center!important;
@@ -107,23 +127,6 @@ export default {
     left: 20px!important;
     z-index: 10!important;
     background: none;
-  }
-  .vieImage::before {
-    content: "";
-    position: absolute;
-    width: 250px;
-    height: 250px;
-    left: 85px;
-    top: 80px;
-    z-index: 9!important;
-    display: flex;
-    justify-content: center;
-    background-image: url('../../assets/images/pokeball.png');
-    background-size: 100%;
-    background-repeat: no-repeat;
-    background-position: center center;
-    will-change: animation, transform;
-    animation: rotationBackground 10s linear infinite;
   }
   .modal-backdrop {
     position: fixed;
@@ -146,6 +149,7 @@ export default {
     height: 600px;
     position: relative;
     border-radius: 25px;
+    overflow: hidden;
   }
   .modal-body {
     position: relative;
