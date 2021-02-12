@@ -58,13 +58,13 @@ export default {
   },  
   created(){
     if(localStorage.pokemons){
-        this.allPokemons = JSON.parse(localStorage.pokemons)
-        this.filteredPokemons = JSON.parse(localStorage.pokemons).slice(0, this.perPage)        
+      this.allPokemons = JSON.parse(localStorage.pokemons)
+      this.filteredPokemons = JSON.parse(localStorage.pokemons).slice(0, this.perPage)        
+      this.setPaginationTotal()
     }
     else{
-       this.getInApi();
+      this.getInApi()
     }
-    this.setPaginationTotal()
   },  
   methods:{
     getInApi: async function(){
@@ -73,6 +73,7 @@ export default {
             this.allPokemons = res.data.results
             this.filteredPokemons = res.data.results.slice(0, this.perPage)
             localStorage.pokemons = JSON.stringify(res.data.results)
+            this.setPaginationTotal()
           })
     },
     showModal(data) {
