@@ -47,7 +47,7 @@ export default {
 <style scoped>
     .infoTypes {
         position: absolute;
-        top: 35px;
+        top: 20px;
         left: 15px;
         text-transform: capitalize 
     }

@@ -12,15 +12,18 @@
       </div>      
     </div>
     <div id="app" v-if="allPokemons">
-      <Pikachu />  
+      <Pikachu />        
       <div class='listsPokemons'>
         <div v-for="(pokemon,index) in filteredPokemons" :key="pokemon.url">
-          <CardPokemon :name="pokemon.name" :url="pokemon.url" :number="index + 1" @showDetails="showModal($event)" />
+          <CardPokemon :slug="pokemon.name" :url="pokemon.url" :number="index + 1" @showDetails="showModal($event)" />
         </div>   
       </div>           
     </div> 
     <div>
       <Modal v-if="isModalVisible" @close="closeModal" :details="details"/>    
+    </div>
+    <div>
+      <Pagination :endPage="allPages" :current="currentPage" @updatePages="changePage($event)" />
     </div>
   </div>
 </template>
@@ -28,7 +31,8 @@
 <script>
 import Pikachu from './components/Animation/Pikachu'
 import CardPokemon from './components/Pokemon/CardPokemon'
-import Modal from './components/Modal/Details'
+import Modal from './components/Modal/DetailsPokemon'
+import Pagination from './components/Pagination/Painel'
 import axios from 'axios'
 
 export default {
@@ -36,7 +40,8 @@ export default {
   components: {
     Pikachu,
     CardPokemon,
-    Modal
+    Modal,
+    Pagination
   },
   data(){
     return {
@@ -46,30 +51,29 @@ export default {
       timeDelay: null,
       isModalVisible: false,
       details: {},
+      allPages:1,
+      perPage: 15,
+      currentPage: 1,
     }
   },  
   created(){
     if(localStorage.pokemons){
         this.allPokemons = JSON.parse(localStorage.pokemons)
-        this.filteredPokemons = JSON.parse(localStorage.pokemons) 
-        return;      
+        this.filteredPokemons = JSON.parse(localStorage.pokemons).slice(0, this.perPage)        
     }
     else{
        this.getInApi();
     }
+    this.setPaginationTotal()
   },  
   methods:{
     getInApi: async function(){
         await axios.get(`${process.env.VUE_APP_URL_POKEAPI}pokemon?limit=${process.env.VUE_APP_LIMIT}&offset=${process.env.VUE_APP_OFSSET}`)
           .then(res => {
             this.allPokemons = res.data.results
-            this.filteredPokemons = res.data.results
+            this.filteredPokemons = res.data.results.slice(0, this.perPage)
             localStorage.pokemons = JSON.stringify(res.data.results)
           })
-    },
-    cleanSearchBar(){
-      this.search = ''
-      this.debounce()
     },
     showModal(data) {
       this.details = data
@@ -78,18 +82,39 @@ export default {
     closeModal() {
       this.isModalVisible = false;
     },
+    cleanSearchBar(){
+      this.search = ''
+      this.debounce()
+    },    
+    filtedPokemon:function(search){
+      this.timeDelay = setTimeout(() => {
+        const paginationPokemons = (search.trim() == '') ? this.allPokemons : this.allPokemons.filter(pokemon => pokemon.name.toUpperCase().indexOf(search.toUpperCase()) != -1)          
+        this.setCurrentPage(1)
+        this.setAllPage(Math.ceil(paginationPokemons.length/this.perPage))
+        this.filteredPokemons = paginationPokemons.slice(0,this.perPage)
+      }, 1000)          
+    },
     debounce: function(){      
       clearTimeout(this.timeDelay)
       this.timeDelay = this.filtedPokemon(this.search)              
     },
-    filtedPokemon:function(search){
-      this.timeDelay = setTimeout(() => {
-        if(search.trim() == ''){
-          this.filteredPokemons = this.allPokemons
-        }else{
-          this.filteredPokemons = this.allPokemons.filter(pokemon => pokemon.name.toUpperCase().indexOf(search.toUpperCase()) != -1)
-        }
-      }, 1000)          
+    setAllPage: function(value){      
+      this.allPages = value             
+    },
+    setCurrentPage: function(value){      
+      this.currentPage = value             
+    },
+    setPaginationTotal(){
+      this.allPages = Math.ceil(this.allPokemons.length/this.perPage);
+    },    
+    changePage(data){
+      this.paginationPokemon(data.page);
+    },    
+    paginationPokemon:function(page){
+      this.setCurrentPage(page)
+      const offset = (page-1) * this.perPage
+      const paginationPokemons = (this.search.trim() == '') ? this.allPokemons : this.allPokemons.filter(pokemon => pokemon.name.toUpperCase().indexOf(this.search.toUpperCase()) != -1)
+      this.filteredPokemons = paginationPokemons.slice(offset, (offset + this.perPage))
     }
   }  
 }

@@ -1,6 +1,7 @@
 <template>
   <div v-if="this.pokemon" v-bind:style="this.background" class="cardPokemon" @click="showModal()">
-      <h2><span>{{this.pokemon.id | formatNumber}}</span>  {{name | capitalize}}</h2>
+      <pre>{{this.pokemon.name | replaceCaracter}}</pre>
+      <div class="labelNumber"><span>{{this.pokemon.id | formatNumber}}</span> </div>
       <ImagePokemon :id="this.pokemon.id" />
       <TypePokemon :types="this.pokemon.types" @applyBackgroundColor="setBackgroundColor($event)"/>
   </div>
@@ -13,8 +14,8 @@ import ImagePokemon from './ImagePokemon'
 
 export default {
     async created(){
-        if(localStorage[this.name]){
-            this.pokemon = JSON.parse(localStorage[this.name]) 
+        if(localStorage[this.slug]){
+            this.pokemon = JSON.parse(localStorage[this.slug]) 
             return;   
         }
         else{
@@ -35,16 +36,16 @@ export default {
     },
     props:{        
         number : Number,
-        name : String,
+        slug : String,
         url : String,
     },
     filters:{
-        capitalize(value){
-            return value[0].toUpperCase() + value.slice(1)
-        },
         formatNumber(value){
-            return "#"+value.toString().padStart(3, '0')
-        }          
+            return "#"+(""+value).padStart(3, '0')
+        },
+        replaceCaracter(value){             
+            return value ? value.replaceAll('-', '\n') : 'N/D'
+        }           
     },
     methods:{
         getInApi: async function(){
@@ -57,7 +58,7 @@ export default {
                     moves :  this.clearMoves(res.data.moves),             
                 }
                 this.pokemon = data
-                localStorage[this.name] = JSON.stringify(data)
+                localStorage[this.slug] = JSON.stringify(data)
             }).catch();
         },
         setBackgroundColor(data) {
@@ -121,16 +122,25 @@ export default {
         transform: scale(1.05);
         cursor: pointer;
     }
-    .cardPokemon h2 {
+    .cardPokemon pre {
         color: var(--white);
-        padding: 15px;
+        padding: 5px 70px;
         text-align: left;
-    }
-    .cardPokemon h2 span {
-        border: 1px solid;
-        padding: 0px 5px;
-        border-radius: 20px;
+        text-transform: capitalize;
         font-size: 13px;
+        font-weight: bold;
+    }
+    .labelNumber span {
+       border: 1px solid;
+        padding: 1px 6px;
+        border-radius: 20px;
+        font-size: 9px;
         font-weight: 400;
+        color: var(--white);
+    }
+    .labelNumber {
+        position: absolute;
+        top: 8px;   
+        left: 15px;
     }
 </style>

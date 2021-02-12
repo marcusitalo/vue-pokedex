@@ -5,7 +5,7 @@
       <section class="modal-body">
         <div class="header-details" v-bind:style="{background: details.background }">
           <p>{{ details.pokemon.id | formatNumber}}</p>
-          <h1>{{ details.pokemon.name | capitalize}}</h1>
+          <h1>{{ details.pokemon.name}}</h1>
           <div class='vieImage'>
             <ImagePokemon :id="details.pokemon.id" class="imageDetails" />          
           </div>            
@@ -43,11 +43,8 @@ export default {
     },
   },
   filters:{
-      capitalize(value){
-          return value[0].toUpperCase() + value.slice(1)
-      },
       formatNumber(value){
-          return "#"+value.toString().padStart(3, '0')
+          return "#"+(""+value).padStart(3, '0')
       }          
   },
 };
@@ -55,6 +52,46 @@ export default {
 
 <style scoped>
 @import '../../assets/css/keyframes/rotationBackground.css';
+  .modal-backdrop {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: var(--black30off);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+  }
+  .modal {
+    background: var(--lightgray2);
+    box-shadow: 0px 0px 10px 1px;
+    overflow-x: auto;
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+    height: 600px;
+    position: relative;
+    border-radius: 25px;
+    overflow: hidden;
+  }
+  .modal-body {
+    position: relative;
+  }
+  .btn-close {
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    font-weight: bold;
+    color: var(--close-color);
+    background: var(--lightgray2);
+    right: 0px;
+    position: absolute;
+    z-index: 999;
+    border-bottom-left-radius: 100px;
+    padding: 5px 15px 15px 20px;
+  }  
   .header-details{
     height: 40vh;
     margin-top: -45px;
@@ -127,44 +164,5 @@ export default {
     left: 20px!important;
     z-index: 10!important;
     background: none;
-  }
-  .modal-backdrop {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background-color: var(--black30off);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  .modal {
-    background: var(--lightgray2);
-    box-shadow: 0px 0px 10px 1px;
-    overflow-x: auto;
-    display: flex;
-    flex-direction: column;
-    width: 400px;
-    height: 600px;
-    position: relative;
-    border-radius: 25px;
-    overflow: hidden;
-  }
-  .modal-body {
-    position: relative;
-  }
-  .btn-close {
-    border: none;
-    font-size: 20px;
-    cursor: pointer;
-    font-weight: bold;
-    color: var(--close-color);
-    background: var(--lightgray2);
-    right: 0px;
-    position: absolute;
-    z-index: 999;
-    border-bottom-left-radius: 100px;
-    padding: 5px 15px 15px 20px;
   }  
 </style>
